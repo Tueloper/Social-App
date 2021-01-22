@@ -8,7 +8,7 @@
 // import axios from 'utils/axios';
 import axios from 'axios';
 // eslint-disable-next-line camelcase
-import moment from 'moment';
+// import moment from 'moment';
 import jwt_decode from 'jwt-decode';
 import {
   POST_SIGN_UP, POST_SIGN_UP_FAIL, LOAD_USER_FAIL, LOAD_USER,

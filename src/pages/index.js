@@ -3,6 +3,7 @@ import ErrorPage from './404';
 import Signup from './signup';
 import Login from './login';
 import Profile from './profile';
+import Upload from './uploadPic';
 
 export {
   App,
@@ -10,4 +11,5 @@ export {
   Signup,
   Login,
   Profile,
+  Upload
 };
