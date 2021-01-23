@@ -89,12 +89,12 @@ const Signup = ({ postSignUp, auth: { isAuthenticated, loader, sessionUser } }) 
     fullname, username, email, password, loading,
   } = formData;
 
-  useEffect(() => {
-    if (!loader) {
-      setFormData({ ...formData, loading: false });
-    }
-    // eslint-disable-next-line
-  }, [loader]);
+  // useEffect(() => {
+  //   if (!loader) {
+  //     setFormData({ ...formData, loading: false });
+  //   }
+  //   // eslint-disable-next-line
+  // }, [loader]);
 
   const onChange = (e) => setFormData({ ...formData, [e.target.name]: e.target.value });
 
@@ -107,9 +107,9 @@ const Signup = ({ postSignUp, auth: { isAuthenticated, loader, sessionUser } }) 
     });
     setFormData({ ...formData, loading: false });
   };
-  if (isAuthenticated) {
-    if (!sessionUser.profilePicture) return <Redirect to='/upload' />;
-    else return alert('Go to Home Page')
+  if (sessionUser) {
+    if (sessionUser.profilePicture) return <Redirect to='/home' />;
+    else return <Redirect to='/upload' />;
   }
 
   return (

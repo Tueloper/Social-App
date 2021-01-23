@@ -116,7 +116,7 @@ justify-content: center;
 align-items: center
 `;
 
-const Login = ({ postLogIn, history, auth: { isAuthenticated, sessionUser } }) => {
+const Login = ({ postLogIn, history, auth: { sessionUser } }) => {
   const [formData, setFormData] = useState({
     email: '',
     password: '',
@@ -136,9 +136,9 @@ const Login = ({ postLogIn, history, auth: { isAuthenticated, sessionUser } }) =
     setFormData({ ...formData, loading2: false });
   };
 
-  if (isAuthenticated) {
-    if (!sessionUser.profilePicture) return <Redirect to='/upload' />;
-    else return alert('Go to Home Page')
+  if (sessionUser) {
+    if (sessionUser.profilePicture) return <Redirect to='/home' />;
+    else return <Redirect to='/upload' />;
   }
 
   return (

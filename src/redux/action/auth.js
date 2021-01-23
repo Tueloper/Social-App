@@ -69,8 +69,8 @@ export const postSignUp = (
   try {
     // eslint-disable-next-line
     const res = await axios.post(`${REACT_APP_API_URL}/auth/signup`, body);
-    console.log(res.data.user.tokens.token);
-    await localStorage.setItem('token', res.data.user.tokens.token);
+    console.log(res.data.user.tokens[0].token);
+    await localStorage.setItem('token', res.data.user.tokens[0].token);
     dispatch({
       type: POST_SIGN_UP,
       payload: res.data.user,
@@ -81,7 +81,7 @@ export const postSignUp = (
     { err.message.startsWith('Network') ? dispatch(setAlert(err.message, 'danger')) : dispatch(setAlert(err.response.data.message, 'danger')); }
     dispatch({
       type: POST_SIGN_UP_FAIL,
-      // payload: err.response.data.error.message,
+      payload: err.response.data.message,
     });
   }
 };
@@ -107,7 +107,6 @@ export const postLogIn = (email, password) => async (dispatch) => {
 
 export const logout = () => async (dispatch) => {
   dispatch({ type: LOG_OUT });
-  // dispatch({ type: GET_TOKEN_ERROR });
 };
 
 export const getProfile = () => async (dispatch) => {
@@ -151,12 +150,12 @@ export const updatePicture = (pic) => async (dispatch) => {
     let profilePicture = up;
     // return console.log(profilePicture);
     const res = await axios.patch(`${REACT_APP_API_URL}/auth/pic`, { profilePicture });
-    return console.log(res);
+    // return console.log(res);
     dispatch({
       type: UPDATE_PROFILE,
       payload: res.data.user,
     });
-    dispatch(getProfile());
+    // dispatch(getProfile());
     dispatch(setAlert('Profile Updated Succesfully', 'success'));
   } catch (err) {
     { err.message.startsWith('Network') ? dispatch(setAlert(err.message, 'danger')) : dispatch(setAlert(err.response.data.message, 'danger')); }

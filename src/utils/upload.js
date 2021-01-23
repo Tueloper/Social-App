@@ -1,4 +1,4 @@
-import axios from 'axios';
+// import axios from 'axios';
 
 // eslint-disable-next-line consistent-return
 const uploadImage = async (e, name) => {
