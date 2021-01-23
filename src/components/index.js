@@ -2,7 +2,7 @@ import Nav from './nav';
 import Layout from './Layout';
 import Signup from './Signup';
 import Login from './login';
-import Profile from './profile';
+// import Profile from './profile';
 import Upload from './upload';
 
 export {
@@ -10,6 +10,6 @@ export {
   Layout,
   Signup,
   Login,
-  Profile,
+  // Profile,
   Upload
 };

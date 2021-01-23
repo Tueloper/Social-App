@@ -5,8 +5,8 @@
 /* eslint-disable max-len */
 /* eslint-disable no-lone-blocks */
 /* eslint-disable no-unused-expressions */
-// import axios from 'utils/axios';
-import axios from 'axios';
+import axios from 'utils/axios';
+// import axios from 'axios';
 // eslint-disable-next-line camelcase
 // import moment from 'moment';
 import jwt_decode from 'jwt-decode';
@@ -67,7 +67,6 @@ export const postSignUp = (
     password,
   };
   try {
-    // return console.log(firstName, lastName, email, password);
     // eslint-disable-next-line
     const res = await axios.post(`${REACT_APP_API_URL}/auth/signup`, body);
     console.log(res.data.user.tokens.token);
@@ -90,14 +89,12 @@ export const postSignUp = (
 export const postLogIn = (email, password) => async (dispatch) => {
   try {
     const res = await axios.post(`${REACT_APP_API_URL}/auth/signin`, { email, password });
-    // return console.log(res);
-    // const num = res.data.user.tokens.length;
-    // const token = res.data.user.tokens[num - 1];
     await localStorage.setItem('token', res.data.token);
     dispatch({
       type: LOGIN_SUCCESS,
       payload: res.data.token,
     });
+    dispatch(loadUser());
     dispatch(setAlert('success', 'success'));
   } catch (err) {
     { err.message.startsWith('Network') ? dispatch(setAlert(err.message, 'danger')) : dispatch(setAlert(err.response.data.message, 'danger')); }
@@ -120,11 +117,6 @@ export const getProfile = () => async (dispatch) => {
     }
     let res = await axios.get(`${REACT_APP_API_URL}v1.0/api/auth/me`);
     res = res.data.user;
-    // if (res.birthDate !== null) {
-    //   const birthDate = moment(res.birthDate).format('L');
-    //   res = { ...res, birthDate };
-    // }
-
     dispatch({
       type: GET_USER_PROFILE,
       payload: res,
@@ -153,30 +145,24 @@ export const updatePassword = (profile) => async (dispatch) => {
   }
 };
 
-export const updateProfile = (profile) => async (dispatch) => {
-  let {
-    firstName, profileImage, phoneNumber, upload, lastName, gender,
-  } = profile;
-  // return console.log(profile);
+export const updatePicture = (pic) => async (dispatch) => {
   try {
-    const up = await uploadImg(upload, REACT_APP_USER_PROFILE);
-    profileImage = up;
-    // console.log(profileImage);
-    const res = await axios.put(`${REACT_APP_API_URL}v1.0/api/auth/profile`, {
-      firstName, profileImage, phoneNumber, lastName, gender,
-    });
-    // return console.log(res);
+    const up = await uploadImg(pic, REACT_APP_USER_PROFILE);
+    let profilePicture = up;
+    // return console.log(profilePicture);
+    const res = await axios.patch(`${REACT_APP_API_URL}/auth/pic`, { profilePicture });
+    return console.log(res);
     dispatch({
       type: UPDATE_PROFILE,
-      payload: res.data.data.user,
+      payload: res.data.user,
     });
     dispatch(getProfile());
     dispatch(setAlert('Profile Updated Succesfully', 'success'));
   } catch (err) {
-    { err.message.startsWith('Network') ? dispatch(setAlert(err.message, 'danger')) : dispatch(setAlert(err.response.data.error.message, 'danger')); }
+    { err.message.startsWith('Network') ? dispatch(setAlert(err.message, 'danger')) : dispatch(setAlert(err.response.data.message, 'danger')); }
     dispatch({
       type: UPDATE_PROFILE_ERROR,
-      payload: err.response.data.error.message,
+      payload: err.response.data.message,
     });
   }
 };

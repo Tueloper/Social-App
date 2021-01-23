@@ -3,21 +3,24 @@
 /* eslint-disable arrow-body-style */
 import React, { useState } from 'react';
 import {
-  Col, Row, Form, Button,
+  Col, Row, Button,
 } from 'react-bootstrap';
 import styled from 'styled-components';
 import { Screen, Basics } from 'styles';
 import { connect } from 'react-redux';
-import { withRouter, Redirect } from 'react-router-dom';
+import { Redirect } from 'react-router-dom';
+import { ReactComponent as plus } from './svg/plus.svg';
 import { ReactComponent as Loader } from './svg/loader.svg';
-// import Shapes from '../images/login.png';
-import { postLogIn } from '../redux/action/auth';
-import Alert from './alert';
+import { updatePicture } from '../redux/action/auth';
+// import Alert from './alert';
 
 const Wrapper = styled.div`
-display: content
+display: flex;
+justify-content: center;
+align-items: center;
+flex-flow: wrap column;
 p{
-  font-weight: 500
+  font-weight: 400
 }
 img{
   max-width: 100%;
@@ -48,19 +51,19 @@ ${Screen.screen425`
 height: auto
 `}
 `;
-const Title = styled.h1`
-font-family: ${Basics.fonts.PeaceSans};
-color: #F44C49
-text-align: center;
-margin-bottom: 50px;
-${Screen.tablet`
-margin-top: 50px;
-margin-bottom: 20px;
-`}
-${Screen.largePhone`
-font-size: 35px
-`}
-`;
+// const Title = styled.h1`
+// font-family: ${Basics.fonts.PeaceSans};
+// color: #F44C49
+// text-align: center;
+// margin-bottom: 50px;
+// ${Screen.tablet`
+// margin-top: 50px;
+// margin-bottom: 20px;
+// `}
+// ${Screen.largePhone`
+// font-size: 35px
+// `}
+// `;
 // const Header = styled.div`
 // width: 100%
 // ${Screen.tablet`
@@ -71,42 +74,105 @@ font-size: 35px
 // `}
 // `;
 
-const FormCon = styled.div`
-display: flex
-justify-content: flex-end
-width: 100%
-form{
+// const FormCon = styled.div`
+// display: flex
+// justify-content: center
+// width: 100%
+// form{
+//   display: flex;
+//   flex-flow: column nowrap
+//   width: 70%
+// }
+// input{
+//   margin-bottom: 30px
+//   border: 1px solid #5555
+//   padding: 10px 30px
+//   border-radius: 15px
+//   outline: none
+// }
+// input::placeholder{
+//   color: #5555
+// }
+// .btn{
+//   width: 40%
+//   border-radius: 15px
+//   outline: none
+// }
+// ${Screen.screen993`
+// justify-content: center
+// `}
+// ${Screen.tablet`
+// margin-top: 100px
+// `}
+// ${Screen.largePhone`
+// margin-bottom: 20px
+// form{
+//   width: 100%
+// }
+// `}
+// `;
+
+
+const MaterialImage = styled.div`
+margin: 20px
+margin-top: 5px
+position: relative;
+display: flex;
+width: 75%;
+justify-content: center;
+.overlay{
+  width: 150px;
+  padding: 10px;
+  min-height: 150px;
+  border-radius: 10px;
+  align-items: center;
   display: flex;
-  flex-flow: column nowrap
-  width: 70%
+  position: absolute;
+  justify-content: center;
 }
-input{
-  margin-bottom: 30px
-  border: 1px solid #5555
-  padding: 10px 30px
-  border-radius: 15px
-  outline: none
+.overlay > input {
+  display: none;
 }
-input::placeholder{
+.overlay img{
+  width: 100%
+  height: 100%
+  z-index: 1000
+  cursor: pointer
+}
+.overlay label{
+  display: none
+}
+.overlay:hover label{
+  display: contents
+}
+.overlay:hover{
+  background: #555
+  // cursor: pointer
+}
+
+.box{
+  width: 150px;
+  padding: 10px;
+  min-height: 150px;
+  border: 1px solid #5555;
+  border-radius: 10px;
+  background: #fff;
+  margin : 0 auto
+// position: relative;
+}
+.box span{
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
   color: #5555
 }
-.btn{
-  width: 40%
-  border-radius: 15px
-  outline: none
-}
-${Screen.screen993`
-justify-content: center
-`}
-${Screen.tablet`
-margin-top: 100px
-`}
-${Screen.largePhone`
-margin-bottom: 20px
-form{
+#file-input1{
   width: 100%
+  height: 100%
+  z-index: 1000
+  cursor: pointer
 }
-`}
 `;
 
 const ButtonContainer = styled.div`
@@ -116,50 +182,51 @@ justify-content: center;
 align-items: center
 `;
 
-const Login = ({ postLogIn, history, auth: { isAuthenticated } }) => {
+const Picture = ({ updatePicture, auth: { isAuthenticated, user } }) => {
   const [formData, setFormData] = useState({
-    email: '',
-    password: '',
-    loading2: false,
+    profilePicture: '',
+    upload: '',
+    loading: false,
   });
 
   const {
-    email, password, loading2,
+    profilePicture, loading, upload
   } = formData;
 
-  const onChange = (e) => setFormData({ ...formData, [e.target.name]: e.target.value });
+  const handleChange = (e) => {
+    setFormData({ ...formData, upload: e.target.files[0], profilePicture: URL.createObjectURL(e.target.files[0]) });
+  };
 
   const onSubmit = async (e) => {
     e.preventDefault();
-    setFormData({ ...formData, loading2: true });
-    await postLogIn(email, password, history);
-    setFormData({ ...formData, loading2: false });
+    setFormData({ ...formData, loading: true });
+    await updatePicture(upload);
+    setFormData({ ...formData, loading: false });
   };
-
-  if (isAuthenticated) {
-    return <Redirect to='/profile' />;
-  }
 
   return (
     <Wrapper >
-      <Row>
-        <Col lg={true}>
-          <Title>Widelife.</Title>
-        </Col>
-        <Col lg={true}>
-          <FormCon>
-            <Form onSubmit={(e) => onSubmit(e)} >
-              <Alert />
-              <input type="email" placeholder='email' name='email' onChange={(e) => onChange(e)} value={email} />
-              <input type="password" placeholder='password' name='password' onChange={(e) => onChange(e)} value={password} />
-              <ButtonContainer >
-                <Button variant="outline-danger" type='submit' >{loading2 ? <Loader /> : 'Login'}</Button>
-              </ButtonContainer>
-            </Form>
-          </FormCon>
+      <h4>Upload A Profile Picture</h4>
+      <MaterialImage>
+        <div className="overlay">
+          <label htmlFor="file-input1">
+            <img src={plus} alt="" style={{ width: '30%', padding: '30px' }} />
+          </label>
+          <input id="file-input1" type="file" onChange={(e) => handleChange(e)} />
+        </div>
+        <div className='box'>
+          {
+            profilePicture !== '' ? <img src={profilePicture} alt="" style={{ width: '100%', height: '100%' }} />
+              : <span style={{ fontSize: '12px' }} >
+                +
+                </span>
+          }
+        </div>
+      </MaterialImage>
+      <ButtonContainer >
+        <Button variant="outline-danger" type='click' onClick={(e) => onSubmit(e)} >{loading ? <Loader /> : 'Upload Image'}</Button>
+      </ButtonContainer>
 
-        </Col>
-      </Row>
     </Wrapper>
   );
 };
@@ -168,4 +235,4 @@ const mapStateToProps = (state) => ({
   auth: state.Auth,
 });
 
-export default connect(mapStateToProps, { postLogIn })(withRouter(Login));
+export default connect(mapStateToProps, { updatePicture })(Picture);
