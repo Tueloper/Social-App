@@ -69,8 +69,8 @@ export const postSignUp = (
   try {
     // eslint-disable-next-line
     const res = await axios.post(`${REACT_APP_API_URL}/auth/signup`, body);
-    console.log(res.data.user.tokens.token);
-    await localStorage.setItem('token', res.data.user.tokens.token);
+    console.log(res.data.user.tokens[0].token);
+    await localStorage.setItem('token', res.data.user.tokens[0].token);
     dispatch({
       type: POST_SIGN_UP,
       payload: res.data.user,

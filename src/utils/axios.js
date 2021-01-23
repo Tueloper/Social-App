@@ -11,6 +11,5 @@ export default axios.create({
     'x-access-token': `${token}`,
     Authorization: `Bearer ${token}`,
     'x-auth-token': `${token}`,
-    Cookie: `token=${token};`,
   },
 });

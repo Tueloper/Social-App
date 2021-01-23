@@ -1,7 +1,7 @@
 /* eslint-disable no-shadow */
 /* eslint-disable max-len */
 /* eslint-disable arrow-body-style */
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Button } from 'react-bootstrap';
 import styled from 'styled-components';
 import { Screen } from 'styles';
@@ -180,7 +180,7 @@ justify-content: center;
 align-items: center
 `;
 
-const Picture = ({ updatePicture, auth: { updateProfile } }) => {
+const Picture = ({ updatePicture, auth: { updateProfile, sessionUser } }) => {
   const [formData, setFormData] = useState({
     profilePicture: '',
     upload: '',
@@ -202,9 +202,18 @@ const Picture = ({ updatePicture, auth: { updateProfile } }) => {
     setFormData({ ...formData, loading: false });
   };
 
-  if (updateProfile) {
-    if (updateProfile.profilePicture) return <Redirect to='/home' />;
-  }
+  if (updateProfile && updateProfile.profilePicture) return <Redirect to='/home' />;
+  if (sessionUser && sessionUser.profilePicture) return <Redirect to='/home' />;
+  // useEffect(() => {
+  //   if (sessionUser) {
+  //     if (sessionUser.profilePicture) return <Redirect to='/home' />;
+  //     else return <Redirect to='/upload' />;
+  //   }
+  // }, [sessionUser]);
+
+  // useEffect(() => {
+  //   if (updateProfile.profilePicture) return <Redirect to='/home' />;
+  // }, [updateProfile]);
 
   return (
     <Wrapper >

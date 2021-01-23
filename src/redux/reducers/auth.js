@@ -30,7 +30,6 @@ export default (state = initialState, { type, payload }) => {
         isAuthenticated: true,
         sessionUser: payload,
         loading: false,
-        userJoinCompany: false,
       };
     case LOAD_USER_FAIL:
       return {
@@ -69,6 +68,8 @@ export default (state = initialState, { type, payload }) => {
         verificationStatus: null,
         loginError: true,
         userProfile: null,
+        updateProfile: null,
+        sessionUser: null
       };
     case UPDATE_PASSWORD_ERROR:
       return {
