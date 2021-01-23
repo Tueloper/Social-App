@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { Helmet } from 'react-helmet';
 import { GlobalStyle, Screen } from 'styles';
 import {
-  Upload,
+  Home,
 } from 'components';
 
 const AppContainer = styled.div`
@@ -21,10 +21,10 @@ const App = () => (
     <AppContainer >
       <Helmet>
         <meta charSet="utf-8" />
-        <title>Upload Image</title>
+        <title>Home</title>
       </Helmet>
       <GlobalStyle />
-      <Upload />
+      <Home />
     </AppContainer>
   </>
 );

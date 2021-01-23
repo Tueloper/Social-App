@@ -18,6 +18,7 @@ const initialState = {
   profileLoader: true,
   userProfile: null,
   userProfileError: null,
+  updateProfile: null,
   updateProfileError: null,
 };
 

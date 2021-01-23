@@ -6,7 +6,7 @@ import { Button } from 'react-bootstrap';
 import styled from 'styled-components';
 import { Screen } from 'styles';
 import { connect } from 'react-redux';
-import { Redirect } from 'react-router-dom';
+// import { Redirect } from 'react-router-dom';
 import { ReactComponent as plus } from './svg/plus.svg';
 import { ReactComponent as Loader } from './svg/loader.svg';
 import { updatePicture } from '../redux/action/auth';
@@ -180,36 +180,32 @@ justify-content: center;
 align-items: center
 `;
 
-const Picture = ({ updatePicture, auth: { updateProfile } }) => {
-  const [formData, setFormData] = useState({
-    profilePicture: '',
-    upload: '',
-    loading: false,
-  });
+const Home = ({ updatePicture, auth: { isAuthenticated, user } }) => {
+  // const [formData, setFormData] = useState({
+  //   profilePicture: '',
+  //   upload: '',
+  //   loading: false,
+  // });
 
-  const {
-    profilePicture, loading, upload
-  } = formData;
+  // const {
+  //   profilePicture, loading, upload
+  // } = formData;
 
-  const handleChange = (e) => {
-    setFormData({ ...formData, upload: e.target.files[0], profilePicture: URL.createObjectURL(e.target.files[0]) });
-  };
+  // const handleChange = (e) => {
+  //   setFormData({ ...formData, upload: e.target.files[0], profilePicture: URL.createObjectURL(e.target.files[0]) });
+  // };
 
-  const onSubmit = async (e) => {
-    e.preventDefault();
-    setFormData({ ...formData, loading: true });
-    await updatePicture(upload);
-    setFormData({ ...formData, loading: false });
-  };
-
-  if (updateProfile) {
-    if (updateProfile.profilePicture) return <Redirect to='/home' />;
-  }
+  // const onSubmit = async (e) => {
+  //   e.preventDefault();
+  //   setFormData({ ...formData, loading: true });
+  //   await updatePicture(upload);
+  //   setFormData({ ...formData, loading: false });
+  // };
 
   return (
     <Wrapper >
-      <h4>Upload A Profile Picture</h4>
-      <MaterialImage>
+      <h4>Home Page</h4>
+      {/* <MaterialImage>
         <div className="overlay">
           <label htmlFor="file-input1">
             <img src={plus} alt="" style={{ width: '30%', padding: '30px' }} />
@@ -227,7 +223,7 @@ const Picture = ({ updatePicture, auth: { updateProfile } }) => {
       </MaterialImage>
       <ButtonContainer >
         <Button variant="outline-danger" type='click' onClick={(e) => onSubmit(e)} >{loading ? <Loader /> : 'Upload Image'}</Button>
-      </ButtonContainer>
+      </ButtonContainer> */}
 
     </Wrapper>
   );
@@ -237,4 +233,4 @@ const mapStateToProps = (state) => ({
   auth: state.Auth,
 });
 
-export default connect(mapStateToProps, { updatePicture })(Picture);
+export default connect(mapStateToProps, { updatePicture })(Home);

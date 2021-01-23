@@ -109,7 +109,7 @@ const Signup = ({ postSignUp, auth: { isAuthenticated, loader, sessionUser } }) 
   };
   if (isAuthenticated) {
     if (!sessionUser.profilePicture) return <Redirect to='/upload' />;
-    else return alert('Go to Home Page')
+    else return <Redirect to='/home' />;
   }
 
   return (

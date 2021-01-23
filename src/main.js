@@ -6,7 +6,8 @@ import {
   ErrorPage,
   Signup,
   Login,
-  Upload
+  Upload,
+  Home
 } from 'pages';
 import { loadUser } from './redux/action/auth';
 import { Layout, Nav } from './components';
@@ -31,6 +32,7 @@ const Main = () => {
         <Route exact path='/' component={Signup} />
         <Route exact path='/login' component={Login} />
         <PrivateRoute exact path='/upload' component={Upload} />
+        <PrivateRoute exact path='/home' component={Home} />
         <Route exact path='/404' component={ErrorPage} />
         <Redirect to="/404" />
       </Switch>
